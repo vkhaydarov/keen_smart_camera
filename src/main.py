@@ -2,14 +2,37 @@ from planteye_vision.pipeline_execution.pipeline_executor import PipeLineExecuto
 from planteye_vision.configuration.planteye_configuration import PlantEyeConfiguration
 from yaml import safe_load
 import logging
+import argparse
+import sys
 
-logging.basicConfig(format='%(asctime)s.%(msecs)03d [%(levelname)s] %(module)s.%(funcName)s: %(message)s',
-                    datefmt='%Y-%m-%d %H:%M:%S', level=logging.DEBUG)
 
-path_to_config_file = 'config_minimal_restapi.yaml'
-with open(path_to_config_file) as config_file:
-    config_dict = safe_load(config_file)
+def read_config_file(path_to_cfg):
+    logging.info(f'Configuration is read from the file {path_to_cfg}')
+    with open(path_to_cfg) as config_file:
+        config_dict = safe_load(config_file)
+    return config_dict
 
-config = PlantEyeConfiguration()
-config.read(config_dict)
-PipeLineExecutor(config).run()
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='PlantEye: Smart Camera')
+    default_config_path = 'config_minimal_restapi.yaml'
+    parser.add_argument('--cfg',
+                        help="Path to configuration file",
+                        metavar='config',
+                        type=str,
+                        required=False)
+    args = parser.parse_args(sys.argv[1:])
+    print(args)
+
+    logging.basicConfig(format='%(asctime)s.%(msecs)03d [%(levelname)s] %(module)s.%(funcName)s: %(message)s',
+                        datefmt='%Y-%m-%d %H:%M:%S', level=logging.DEBUG)
+
+    path_to_cfg = args.cfg
+    if path_to_cfg is None:
+        path_to_cfg = 'config_minimal_restapi.yaml'
+
+    config_dict = read_config_file(path_to_cfg)
+
+    config = PlantEyeConfiguration()
+    config.read(config_dict)
+    PipeLineExecutor(config).run()
