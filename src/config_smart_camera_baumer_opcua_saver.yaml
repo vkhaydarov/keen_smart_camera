@@ -1,0 +1,118 @@
+---
+inlets:
+  1:
+    name: camera
+    type: baumer_camera_neoapi
+    hidden: False
+    parameters:
+      device_id: 0
+      # ExposureTime: 5000
+    metadata:
+      '010F': Baumer # Manufacturer of recording equipment
+      '0110': AX_Series Smart Cameras # The model name or model number of the equipment
+      'A432': 16mm/F1.4 # Lens specification.
+      'A433': Raspberry PI # Lens manufacturer.
+      'A434': RPIZ CAM 16MM TO # Lens model.
+      '013B': P2O-Lab # This tag records the name of the camera owner, photographer or image creator.
+      '0131': PlantEye/Vision, 1.0.0 # This tag records the name and version of the software.
+      '9208': Vessel light, 2.5 W # The kind of light source.
+      '0140': undefined  # A color map for palette color images.
+      '0112': 1 # The image orientation
+      '829D': 1.4 # The F number.
+      '9202': 1.4 # The lens aperture.
+      '920A': 16 # The actual focal length of the lens, in mm.
+      'Camera_position': xxx
+  2:
+    name: light_conditions
+    type: static_variable
+    parameters:
+      value: artifical
+    metadata:
+      unit: none
+      interpretation: artificial light switched on
+      description: light conditions during experiment
+  3:
+    name: flow_regime
+    type: static_variable
+    parameters:
+      value: -1 # 0, 1, 2 for different classes
+    metadata:
+      unit: none
+      interpretation: none # i.e. flooded
+      description: flow regime in reactor
+  4:
+    name: stirrer_rotational_speed
+    type: opcua_variable
+    parameters:
+      server: 'opc.tcp://10.6.51.40:4840'
+      username: admin
+      password: wago
+      node_ns: 4
+      node_id: '|var|WAGO 750-8212 PFC200 G2 2ETH RS.Application.Services.AGIT_1.CP_AGIT_SETPOINT_RPM.VOut'
+    metadata:
+      unit: rpm
+      description: Setpoint for stirrer rotational speed just peakwise reached
+      error: Stirrer sets back to zero and restarts without recognizable pattern
+  5:
+    name: fill_level
+    type: opcua_variable
+    parameters:
+      server: 'opc.tcp://10.6.51.40:4840'
+      username: admin
+      password: wago
+      node_ns: 4
+      node_id: '|var|WAGO 750-8212 PFC200 G2 2ETH RS.Application.Services.TRANSFER_WATER_1.PV_TRAN_WATER_ActualWeight.V'
+    metadata:
+      unit: kg
+      description: Read value of fill level in reactor
+  6:
+    name: pressure
+    type: opcua_variable
+    parameters:
+      server: 'opc.tcp://10.6.51.40:4840'
+      username: admin
+      password: wago
+      node_ns: 4
+      node_id: '|var|WAGO 750-8212 PFC200 G2 2ETH RS.Application.Services.PRESSURE_1.PV_PRES_ActualControllerPressure.V'
+    metadata:
+      unit: bar
+      description: Read value of pressure in reactor
+  7:
+    name: gas_flow_rate
+    type: opcua_variable
+    parameters:
+      server: 'opc.tcp://10.6.51.201:4840'
+      username:
+      password:
+      node_ns: 2
+      node_id: 'ActualVolumeflow_V'
+    metadata:
+      unit: nlpm
+      description: Read value of volumentric flow rate of gas
+  8:
+    name: temperature
+    type: opcua_variable
+    parameters:
+      server: 'opc.tcp://10.6.51.40:4840'
+      username: admin
+      password: wago
+      node_ns: 4
+      node_id: '|var|WAGO 750-8212 PFC200 G2 2ETH RS.Application.Services.TEMP_1.PV_TEMP_ActualTemperature.V'
+    metadata:
+      unit: gradC
+      description: Read value of temperature in reactor
+processors:
+  0:
+    name: image_input
+    type: input
+    input_inlets:
+      - all
+  1:
+    name: save
+    type: save_on_disk
+    parameters:
+      save_path: '/media/pi/01D86604CD9117901/SA_Wecke/raw_data/2022-07-22/'
+shell:
+  type: periodical_local
+  parameters:
+    time_interval: 200
