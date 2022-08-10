@@ -15,7 +15,6 @@ def read_config_file(path_to_cfg):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='PlantEye: Smart Camera')
-    default_config_path = 'config_minimal_restapi.yaml'
     parser.add_argument('--cfg',
                         help="Path to configuration file",
                         metavar='config',
@@ -29,7 +28,7 @@ if __name__ == '__main__':
 
     path_to_cfg = args.cfg
     if path_to_cfg is None:
-        path_to_cfg = 'config_minimal_restapi.yaml'
+        path_to_cfg = 'config_opencv2_restapi_minimal.yaml'
 
     config_dict = read_config_file(path_to_cfg)
 

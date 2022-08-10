@@ -111,7 +111,7 @@ processors:
     name: save
     type: save_on_disk
     parameters:
-      save_path: '/media/pi/01D86604CD9117901/SA_Wecke/raw_data/2022-07-22/'
+      save_path: '/media/pi/01D86604CD911790/SA_Wecke/raw_data/2022-08-10/'
 shell:
   type: periodical_local
   parameters:

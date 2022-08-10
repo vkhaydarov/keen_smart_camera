@@ -1,0 +1,45 @@
+---
+inlets:
+  1:
+    name: camera
+    type: baumer_camera_neoapi
+    hidden: False
+    parameters:
+      device_id: 0
+      ExposureTime: 5000
+    metadata:
+      '010F': Baumer # Manufacturer of recording equipment
+      '0110': AX_Series Smart Cameras # The model name or model number of the equipment
+      'A432': 16mm/F1.4 # Lens specification.
+      'A433': Raspberry PI # Lens manufacturer.
+      'A434': RPIZ CAM 16MM TO # Lens model.
+      '013B': P2O-Lab # This tag records the name of the camera owner, photographer or image creator.
+      '0131': PlantEye/Vision, 1.0.0 # This tag records the name and version of the software.
+      '9208': Vessel light, 2.5 W # The kind of light source.
+      '0140': undefined  # A color map for palette color images.
+      '0112': 1 # The image orientation
+      '829D': 1.4 # The F number.
+      '9202': 1.4 # The lens aperture.
+      '920A': 16 # The actual focal length of the lens, in mm.
+      'Camera_position': xxx
+  2:
+    name: light_conditions
+    type: static_variable
+    parameters:
+      value: artifical
+    metadata:
+      unit: none
+      interpretation: artificial light switched on
+      description: light conditions during experiment
+processors:
+  0:
+    name: image_input
+    type: input
+    input_inlets:
+      - all
+shell:
+  type: rest_api
+  parameters:
+    host: 0.0.0.0
+    port: 5000
+    endpoint: '/get_frame'
