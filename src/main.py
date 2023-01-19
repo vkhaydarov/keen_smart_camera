@@ -24,11 +24,11 @@ if __name__ == '__main__':
     print(args)
 
     logging.basicConfig(format='%(asctime)s.%(msecs)03d [%(levelname)s] %(module)s.%(funcName)s: %(message)s',
-                        datefmt='%Y-%m-%d %H:%M:%S', level=logging.DEBUG)
+                        datefmt='%Y-%m-%d %H:%M:%S', level=logging.INFO)
 
     path_to_cfg = args.cfg
     if path_to_cfg is None:
-        path_to_cfg = 'config_opencv2_restapi_minimal.yaml'
+        path_to_cfg = 'src/config_opencv2_restapi_minimal.yaml'
 
     config_dict = read_config_file(path_to_cfg)
 
